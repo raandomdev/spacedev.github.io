@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Free software built for native macOS!">
 <title>Spacedev</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -10,7 +11,6 @@
   :root {
     --glass-fill: rgba(255,255,255,0.10);
     --glass-fill-strong: rgba(255,255,255,0.16);
-    --glass-border: rgba(255,255,255,0.32);
     --glass-border-dim: rgba(255,255,255,0.16);
     --text-primary: #f5f7ff;
     --text-secondary: rgba(235,238,255,0.72);
@@ -50,120 +50,71 @@
       radial-gradient(700px 500px at 88% 85%, rgba(111,216,255,0.16), transparent 60%);
   }
 
-  /* ---------- TRUE LIQUID GLASS BASE ---------- */
   .glass {
     background: linear-gradient(155deg, var(--glass-fill-strong), var(--glass-fill) 55%, rgba(255,255,255,0.05));
     -webkit-backdrop-filter: url(#liquid-distort) blur(20px) saturate(170%);
     backdrop-filter: url(#liquid-distort) blur(20px) saturate(170%);
     border: 1px solid var(--glass-border-dim);
     position: relative;
-    box-shadow:
-      0 20px 50px -18px rgba(5,8,30,0.55),
-      inset 0 1px 0 rgba(255,255,255,0.45),
-      inset 0 -1px 0 rgba(255,255,255,0.05);
+    box-shadow: 0 20px 50px -18px rgba(5,8,30,0.55), inset 0 1px 0 rgba(255,255,255,0.45), inset 0 -1px 0 rgba(255,255,255,0.05);
   }
   .glass::before {
-    content: '';
-    position: absolute; inset: 0; border-radius: inherit; padding: 1px;
+    content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1px;
     background: linear-gradient(160deg, rgba(255,255,255,0.6), rgba(255,255,255,0) 40%, rgba(255,255,255,0.12) 100%);
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor; mask-composite: exclude;
     pointer-events: none;
   }
-  /* specular highlight that tracks the pointer in real time */
   .glass::after {
-    content: '';
-    position: absolute; inset: 0; border-radius: inherit;
+    content: ''; position: absolute; inset: 0; border-radius: inherit;
     background: radial-gradient(180px 180px at var(--mx, 50%) var(--my, 0%), rgba(255,255,255,0.35), transparent 60%);
-    opacity: 0; transition: opacity 0.25s ease;
-    pointer-events: none;
+    opacity: 0; transition: opacity 0.25s ease; pointer-events: none;
   }
   .glass:hover::after, .glass.glow::after { opacity: 1; }
 
-  /* ---------- NAVBAR ---------- */
-  nav {
-    position: sticky; top: 14px; z-index: 50;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 14px 22px; margin: 0 20px 0; border-radius: 22px;
-  }
-
-  .brand { display: flex; align-items: center; gap: 12px; }
+  nav { position: sticky; top: 14px; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding: 14px 22px; margin: 0 20px 0; border-radius: 22px; }
+  .brand { display: flex; align-items: center; gap: 12px; cursor: pointer; }
   .brand-mark { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
   .brand-mark svg { width: 22px; height: 22px; position: relative; z-index: 1; }
   .brand-name { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 19px; letter-spacing: -0.01em; }
   .brand-name .accent { color: var(--accent-violet); }
 
-  .nav-links {
-    position: relative;
-    display: flex; align-items: center; gap: 2px;
-    border-radius: 16px; padding: 4px;
-    -webkit-backdrop-filter: url(#liquid-distort) blur(14px);
-    backdrop-filter: url(#liquid-distort) blur(14px);
-    background: rgba(255,255,255,0.06);
-    border: 1px solid var(--glass-border-dim);
-  }
+  .nav-links { position: relative; display: flex; align-items: center; gap: 2px; border-radius: 16px; padding: 4px;
+    -webkit-backdrop-filter: url(#liquid-distort) blur(14px); backdrop-filter: url(#liquid-distort) blur(14px);
+    background: rgba(255,255,255,0.06); border: 1px solid var(--glass-border-dim); }
 
-  /* the liquid pill that glides beneath the active/dragged tab */
-  .pill {
-    position: absolute;
-    top: 4px; left: 4px; height: calc(100% - 8px); width: 90px;
-    border-radius: 12px;
+  .pill { position: absolute; top: 4px; left: 4px; height: calc(100% - 8px); width: 90px; border-radius: 12px;
     background: linear-gradient(155deg, rgba(255,255,255,0.55), rgba(255,255,255,0.18));
-    box-shadow:
-      inset 0 0 0 1px rgba(255,255,255,0.6),
-      inset 0 1px 0 rgba(255,255,255,0.9),
-      0 6px 18px -4px rgba(0,0,0,0.35);
-    -webkit-backdrop-filter: url(#liquid-distort) blur(6px);
-    backdrop-filter: url(#liquid-distort) blur(6px);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.6), inset 0 1px 0 rgba(255,255,255,0.9), 0 6px 18px -4px rgba(0,0,0,0.35);
+    -webkit-backdrop-filter: url(#liquid-distort) blur(6px); backdrop-filter: url(#liquid-distort) blur(6px);
     z-index: 0;
-    transition: left 0.55s cubic-bezier(.34,1.56,.64,1),
-                width 0.55s cubic-bezier(.34,1.56,.64,1),
-                border-radius 0.35s ease,
-                transform 0.55s cubic-bezier(.34,1.56,.64,1);
-    pointer-events: none;
-    will-change: left, width, transform;
+    transition: left 0.55s cubic-bezier(.34,1.56,.64,1), width 0.55s cubic-bezier(.34,1.56,.64,1), border-radius 0.35s ease, transform 0.55s cubic-bezier(.34,1.56,.64,1);
+    pointer-events: none; will-change: left, width, transform;
   }
   .pill.squish { border-radius: 22px; transform: scaleX(1.08) scaleY(0.94); }
 
-  .tab {
-    position: relative; z-index: 1;
-    color: var(--text-secondary);
-    text-decoration: none;
-    font-size: 14.5px; font-weight: 500;
-    padding: 9px 18px;
-    border-radius: 10px;
-    cursor: grab;
-    user-select: none;
-    transition: color 0.2s ease, transform 0.18s cubic-bezier(.34,1.56,.64,1);
-    touch-action: none;
-  }
+  .tab { position: relative; z-index: 1; color: var(--text-secondary); text-decoration: none; font-size: 14.5px; font-weight: 500; padding: 9px 18px; border-radius: 10px; cursor: grab; user-select: none; transition: color 0.2s ease; touch-action: none; background: none; border: none; font-family: inherit; }
   .tab:hover { color: var(--text-primary); }
   .tab.active { color: #10163a; font-weight: 600; }
-  .tab.dragging {
-    cursor: grabbing;
-    z-index: 10;
-    color: #10163a;
-    transition: none;
-  }
+  .tab.dragging { cursor: grabbing; z-index: 10; color: #10163a; transition: none; }
   .tab.settling { transition: transform 0.5s cubic-bezier(.34,1.56,.64,1); }
 
   @media (max-width: 720px) { .nav-links { display: none; } }
 
-  /* ---------- HERO ---------- */
-  .hero {
-    position: relative; z-index: 1;
-    display: grid; grid-template-columns: 1.05fr 1fr; align-items: center; gap: 48px;
-    max-width: 1180px; margin: 0 auto; padding: 90px 36px 120px;
-  }
-  @media (max-width: 980px) { .hero { grid-template-columns: 1fr; padding-top: 56px; } }
+  main { position: relative; z-index: 1; }
+  .page { display: none; animation: pageIn 0.5s ease; }
+  .page.active { display: block; }
+  @keyframes pageIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
+  .hero { display: grid; grid-template-columns: 1.05fr 1fr; align-items: center; gap: 48px; max-width: 1180px; margin: 0 auto; padding: 90px 36px 60px; }
+  @media (max-width: 980px) { .hero { grid-template-columns: 1fr; padding-top: 56px; } }
   .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #eafcff; padding: 7px 14px; border-radius: 100px; margin-bottom: 24px; }
   .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-green); box-shadow: 0 0 8px var(--accent-green); }
-
   .hero h1 { font-size: clamp(38px, 5vw, 56px); line-height: 1.08; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 22px; text-shadow: 0 2px 30px rgba(20,10,80,0.35); }
   .hero h1 .grad { background: linear-gradient(100deg, #ffffff, var(--accent-blue)); -webkit-background-clip: text; background-clip: text; color: transparent; }
   .hero p { color: var(--text-secondary); font-size: 16.5px; line-height: 1.65; max-width: 460px; margin-bottom: 36px; }
   .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
+  .hint { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-dim); margin-top: 14px; }
 
   .btn { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 14.5px; padding: 13px 26px; border-radius: 100px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease; cursor: pointer; border: none; }
   .btn-primary { color: #0b1440; background: linear-gradient(120deg, #ffffff, #d7e9ff); box-shadow: 0 10px 26px -8px rgba(255,255,255,0.4), inset 0 1px 0 rgba(255,255,255,0.9); font-weight: 700; }
@@ -188,20 +139,52 @@
   .badge-float { position: absolute; top: -18px; right: -14px; width: 60px; height: 60px; border-radius: 18px; display: flex; align-items: center; justify-content: center; background: linear-gradient(155deg, rgba(255,255,255,0.5), rgba(94,234,212,0.35)); box-shadow: 0 16px 30px -8px rgba(94,234,212,0.5), inset 0 1px 0 rgba(255,255,255,0.8); z-index: 3; }
   .badge-float svg { width: 26px; height: 26px; }
 
-  .section { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; padding: 30px 36px 110px; }
+  .section { max-width: 1180px; margin: 0 auto; padding: 30px 36px 110px; }
   .section-label { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--accent-gold); letter-spacing: 0.04em; margin-bottom: 14px; }
-  .hint { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-dim); margin-top: 8px; }
   .strip { display: flex; gap: 16px; flex-wrap: wrap; padding-top: 28px; }
   .strip-item { flex: 1; min-width: 180px; border-radius: 18px; padding: 22px; }
   .strip-item h3 { font-size: 15px; margin-bottom: 6px; color: var(--text-primary); }
   .strip-item p { font-size: 13.5px; color: var(--text-dim); line-height: 1.55; }
+
+  /* generic page header used on non-home pages */
+  .page-head { max-width: 1180px; margin: 0 auto; padding: 70px 36px 10px; }
+  .page-head h2 { font-size: clamp(30px, 4vw, 42px); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 10px; }
+  .page-head p { color: var(--text-secondary); font-size: 15.5px; max-width: 560px; line-height: 1.6; }
+
+  /* downloads page */
+  .download-card { max-width: 1180px; margin: 30px auto 0; padding: 0 36px; }
+  .dl-panel { border-radius: 22px; padding: 32px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .dl-info h3 { font-size: 20px; margin-bottom: 6px; }
+  .dl-info p { color: var(--text-dim); font-size: 13.5px; font-family: 'JetBrains Mono', monospace; }
+  .dl-specs { display: flex; gap: 28px; max-width: 1180px; margin: 20px auto 0; padding: 0 36px; flex-wrap: wrap; }
+  .dl-spec { flex: 1; min-width: 160px; border-radius: 16px; padding: 18px 20px; }
+  .dl-spec span { display: block; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--accent-gold); margin-bottom: 6px; letter-spacing: 0.04em; }
+  .dl-spec strong { font-size: 15px; font-weight: 600; }
+
+  /* showcase page */
+  .showcase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; max-width: 1180px; margin: 30px auto 0; padding: 0 36px 100px; }
+  .show-card { border-radius: 20px; padding: 24px; }
+  .show-thumb { height: 130px; border-radius: 14px; margin-bottom: 16px; background: linear-gradient(135deg, rgba(168,155,255,0.35), rgba(111,216,255,0.2)); position: relative; overflow: hidden; }
+  .show-thumb::after { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.5), transparent 55%); }
+  .show-card h3 { font-size: 15.5px; margin-bottom: 6px; }
+  .show-card p { font-size: 13px; color: var(--text-dim); line-height: 1.5; }
+
+  /* credits page */
+  .credits-list { max-width: 1180px; margin: 30px auto 0; padding: 0 36px 100px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .credit-item { border-radius: 18px; padding: 20px 22px; }
+  .credit-item span { display: block; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent-blue); margin-bottom: 6px; letter-spacing: 0.05em; }
+  .credit-item strong { font-size: 15.5px; }
+  .credit-item em { display: block; font-style: normal; color: var(--text-dim); font-size: 12.5px; margin-top: 3px; }
+
+  /* about page */
+  .about-body { max-width: 780px; margin: 30px auto 0; padding: 0 36px 110px; }
+  .about-body p { color: var(--text-secondary); font-size: 15.5px; line-height: 1.75; margin-bottom: 18px; }
 
   footer { text-align: center; color: var(--text-dim); font-size: 13px; padding: 28px 20px 44px; position: relative; z-index: 1; font-family: 'JetBrains Mono', monospace; }
 </style>
 </head>
 <body>
 
-<!-- SVG liquid-glass refraction filter, referenced by every .glass element -->
 <svg width="0" height="0" style="position:absolute">
   <filter id="liquid-distort" x="-20%" y="-20%" width="140%" height="140%">
     <feTurbulence type="fractalNoise" baseFrequency="0.010 0.015" numOctaves="2" seed="7" result="noise"/>
@@ -227,7 +210,7 @@
 <div class="grain-glow"></div>
 
 <nav class="glass">
-  <div class="brand">
+  <div class="brand" id="brandHome">
     <div class="brand-mark glass">
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M12 2L13.8 8.6L20 10.5L13.8 12.4L12 19L10.2 12.4L4 10.5L10.2 8.6L12 2Z" fill="url(#g1)"/>
@@ -240,54 +223,135 @@
 
   <div class="nav-links" id="navLinks">
     <div class="pill" id="pill"></div>
-    <a href="#home" class="tab active" data-key="home">Home</a>
-    <a href="#downloads" class="tab" data-key="downloads">Downloads</a>
-    <a href="#showcase" class="tab" data-key="showcase">Showcase</a>
-    <a href="#credits" class="tab" data-key="credits">Credits</a>
-    <a href="#about" class="tab" data-key="about">About</a>
+    <button class="tab active" data-page="home">Home</button>
+    <button class="tab" data-page="downloads">Downloads</button>
+    <button class="tab" data-page="showcase">Showcase</button>
+    <button class="tab" data-page="credits">Credits</button>
+    <button class="tab" data-page="about">About</button>
   </div>
 </nav>
 
-<section class="hero" id="home">
-  <div class="hero-copy">
-    <div class="eyebrow glass"><span class="dot"></span> BUILD STATUS: PASSING</div>
-    <h1>Automation that <span class="grad">launches clean</span>, every time.</h1>
-    <p>Spacedev builds fast, dependable automation tooling — from calibration to compile, engineered to just work on the first run.</p>
-    <div class="hero-ctas">
-      <a href="#downloads" class="btn btn-primary">Get Started →</a>
-      <a href="#showcase" class="btn btn-ghost glass">View Showcase</a>
-    </div>
-    <div class="hint">try dragging the tabs above — they're real glass, not a picture of it</div>
-  </div>
+<main>
 
-  <div class="terminal-wrap">
-    <div class="orb"></div>
-    <div class="terminal glass">
-      <div class="badge-float glass">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M5 13L9.5 17.5L19 7" stroke="white" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <!-- HOME -->
+  <section class="page active" id="page-home">
+    <div class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow glass"><span class="dot"></span> BUILD STATUS: PASSING</div>
+        <h1>Automation that <span class="grad">launches clean</span>, every time.</h1>
+        <p>Spacedev builds fast, dependable automation tooling — from calibration to compile, engineered to just work on the first run.</p>
+        <div class="hero-ctas">
+          <button class="btn btn-primary go-page" data-page="downloads">Get Started →</button>
+          <button class="btn btn-ghost glass go-page" data-page="showcase">View Showcase</button>
+        </div>
+        <div class="hint">drag the tabs above to reorder them — they're real glass, not a picture of it</div>
       </div>
-      <div class="term-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
-      <div class="term-line"><span class="prompt">$</span><span class="cmd">spacedev --start</span></div>
-      <div class="term-line"><span class="ok">✓</span> Macro initialized successfully</div>
-      <div class="term-line"><span class="arrow">→</span> Automation ready<span class="cursor"></span></div>
-      <div class="progress-track"><div class="progress-fill"></div></div>
+
+      <div class="terminal-wrap">
+        <div class="orb"></div>
+        <div class="terminal glass">
+          <div class="badge-float glass">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M5 13L9.5 17.5L19 7" stroke="white" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="term-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+          <div class="term-line"><span class="prompt">$</span><span class="cmd">spacedev --start</span></div>
+          <div class="term-line"><span class="ok">✓</span> Macro initialized successfully</div>
+          <div class="term-line"><span class="arrow">→</span> Automation ready<span class="cursor"></span></div>
+          <div class="progress-track"><div class="progress-fill"></div></div>
+        </div>
+      </div>
     </div>
-  </div>
-</section>
 
-<section class="section">
-  <div class="section-label">// WHY SPACEDEV</div>
-  <div class="strip">
-    <div class="strip-item glass"><h3>Built for macOS</h3><p>Native arm64 builds with proper permission handling on first launch.</p></div>
-    <div class="strip-item glass"><h3>Zero-config calibration</h3><p>Resolution-independent presets that just work across Mac models.</p></div>
-    <div class="strip-item glass"><h3>Fast iteration</h3><p>A build pipeline tuned for quick, reliable releases.</p></div>
-  </div>
-</section>
+    <div class="section">
+      <div class="section-label">// WHY SPACEDEV</div>
+      <div class="strip">
+        <div class="strip-item glass"><h3>Built for macOS</h3><p>Native arm64 builds with proper permission handling on first launch.</p></div>
+        <div class="strip-item glass"><h3>Zero-config calibration</h3><p>Resolution-independent presets that just work across Mac models.</p></div>
+        <div class="strip-item glass"><h3>Fast iteration</h3><p>A build pipeline tuned for quick, reliable releases.</p></div>
+      </div>
+    </div>
+  </section>
 
-<footer id="about">Spacedev — automation tooling, built precisely.</footer>
+  <!-- DOWNLOADS -->
+  <section class="page" id="page-downloads">
+    <div class="page-head">
+      <h2>Downloads</h2>
+      <p>Grab the latest build. Rename these labels, links, and version numbers to match your actual release.</p>
+    </div>
+
+    <div class="download-card">
+      <div class="dl-panel glass">
+        <div class="dl-info">
+          <h3>Spacedev — v2.4.0</h3>
+          <p>macOS · Apple Silicon (arm64) · 41.2 MB</p>
+        </div>
+        <a href="#" class="btn btn-primary">Download .dmg ↓</a>
+      </div>
+    </div>
+
+    <div class="dl-specs">
+      <div class="dl-spec glass"><span>REQUIRES</span><strong>macOS 13 Ventura+</strong></div>
+      <div class="dl-spec glass"><span>ARCHITECTURE</span><strong>Apple Silicon</strong></div>
+      <div class="dl-spec glass"><span>PERMISSIONS</span><strong>Screen Recording, Accessibility</strong></div>
+      <div class="dl-spec glass"><span>LAST UPDATED</span><strong>Edit this date</strong></div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">// OLDER RELEASES</div>
+      <div class="strip">
+        <div class="strip-item glass"><h3>v2.3.1</h3><p>Placeholder changelog line — swap in your real release notes.</p></div>
+        <div class="strip-item glass"><h3>v2.2.0</h3><p>Placeholder changelog line — swap in your real release notes.</p></div>
+        <div class="strip-item glass"><h3>v2.1.0</h3><p>Placeholder changelog line — swap in your real release notes.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHOWCASE -->
+  <section class="page" id="page-showcase">
+    <div class="page-head">
+      <h2>Showcase</h2>
+      <p>Drop in real screenshots or clips here — these are placeholder cards ready to be swapped out.</p>
+    </div>
+    <div class="showcase-grid">
+      <div class="show-card glass"><div class="show-thumb"></div><h3>Calibration overlay</h3><p>Replace with a screenshot of this feature in action.</p></div>
+      <div class="show-card glass"><div class="show-thumb"></div><h3>Live automation run</h3><p>Replace with a screenshot or short clip.</p></div>
+      <div class="show-card glass"><div class="show-thumb"></div><h3>Build dashboard</h3><p>Replace with a screenshot of this feature.</p></div>
+      <div class="show-card glass"><div class="show-thumb"></div><h3>Settings panel</h3><p>Replace with a screenshot of this feature.</p></div>
+      <div class="show-card glass"><div class="show-thumb"></div><h3>Discord sync</h3><p>Replace with a screenshot of this feature.</p></div>
+      <div class="show-card glass"><div class="show-thumb"></div><h3>Community build</h3><p>Replace with a screenshot from a user.</p></div>
+    </div>
+  </section>
+
+  <!-- CREDITS -->
+  <section class="page" id="page-credits">
+    <div class="page-head">
+      <h2>Credits</h2>
+      <p>Everyone who worked on Spacedev. Rename these roles and names to your real team.</p>
+    </div>
+    <div class="credits-list">
+      <div class="credit-item glass"><span>CORE DEVELOPMENT</span><strong>Your name here</strong><em>Rename me</em></div>
+      <div class="credit-item glass"><span>DESIGN</span><strong>Your name here</strong><em>Rename me</em></div>
+      <div class="credit-item glass"><span>QA & TESTING</span><strong>Your name here</strong><em>Rename me</em></div>
+      <div class="credit-item glass"><span>SPECIAL THANKS</span><strong>Your name here</strong><em>Rename me</em></div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="page" id="page-about">
+    <div class="page-head">
+      <h2>About</h2>
+    </div>
+    <div class="about-body">
+      <p>Spacedev is a small team building automation tooling for macOS. Replace this paragraph with your real story — what the project is, why it exists, and who it's for.</p>
+      <p>This is placeholder copy. Swap it out for your actual mission, background, and roadmap once the rest of the site is dialed in.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>Spacedev — automation tooling, built precisely.</footer>
 
 <script>
-// ---------- real-time specular highlight tracking (pointer-follow glass sheen) ----------
 document.querySelectorAll('.glass').forEach(el => {
   el.addEventListener('pointermove', e => {
     const r = el.getBoundingClientRect();
@@ -298,10 +362,10 @@ document.querySelectorAll('.glass').forEach(el => {
   el.addEventListener('pointerleave', () => el.classList.remove('glow'));
 });
 
-// ---------- liquid pill: glides to active tab ----------
 const navLinks = document.getElementById('navLinks');
 const pill = document.getElementById('pill');
 let tabs = Array.from(navLinks.querySelectorAll('.tab'));
+const pages = Array.from(document.querySelectorAll('.page'));
 
 function movePillTo(tab, squish) {
   const navRect = navLinks.getBoundingClientRect();
@@ -315,17 +379,28 @@ function movePillTo(tab, squish) {
   }
 }
 
+function showPage(key) {
+  pages.forEach(p => p.classList.toggle('active', p.id === 'page-' + key));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 function setActive(tab) {
   tabs.forEach(t => t.classList.remove('active'));
   tab.classList.add('active');
   movePillTo(tab, true);
+  showPage(tab.dataset.page);
 }
 
 window.addEventListener('load', () => movePillTo(navLinks.querySelector('.tab.active'), false));
 window.addEventListener('resize', () => movePillTo(navLinks.querySelector('.tab.active'), false));
 
-// ---------- draggable, reorderable liquid tabs ----------
-let dragTab = null, startX = 0, origLeft = 0, pointerId = null, moved = false;
+document.getElementById('brandHome').addEventListener('click', () => setActive(navLinks.querySelector('[data-page="home"]')));
+
+document.querySelectorAll('.go-page').forEach(btn => {
+  btn.addEventListener('click', () => setActive(navLinks.querySelector(`.tab[data-page="${btn.dataset.page}"]`)));
+});
+
+let dragTab = null, startX = 0, pointerId = null, moved = false;
 
 tabs.forEach(tab => {
   tab.addEventListener('pointerdown', e => {
@@ -333,7 +408,6 @@ tabs.forEach(tab => {
     pointerId = e.pointerId;
     tab.setPointerCapture(pointerId);
     startX = e.clientX;
-    origLeft = tab.getBoundingClientRect().left;
     moved = false;
     tab.classList.add('dragging');
     tab.style.transition = 'none';
@@ -343,13 +417,11 @@ tabs.forEach(tab => {
     if (dragTab !== tab) return;
     const dx = e.clientX - startX;
     if (Math.abs(dx) > 3) moved = true;
-    // real-time liquid stretch: skew + scale tied to drag velocity
     const skew = Math.max(-10, Math.min(10, dx * 0.15));
     const stretch = 1 + Math.min(0.14, Math.abs(dx) * 0.0025);
     tab.style.transform = `translateX(${dx}px) skewX(${-skew}deg) scaleX(${stretch})`;
     movePillTo(tab, false);
 
-    // check for reordering against neighbors
     const myRect = tab.getBoundingClientRect();
     const myMid = myRect.left + myRect.width / 2;
     tabs.forEach(other => {
@@ -359,18 +431,16 @@ tabs.forEach(tab => {
       if (dx > 0 && myMid > oMid && tab.compareDocumentPosition(other) & Node.DOCUMENT_POSITION_FOLLOWING) {
         navLinks.insertBefore(tab, other.nextSibling);
         startX = e.clientX;
-        origLeft = tab.getBoundingClientRect().left;
         tabs = Array.from(navLinks.querySelectorAll('.tab'));
       } else if (dx < 0 && myMid < oMid && tab.compareDocumentPosition(other) & Node.DOCUMENT_POSITION_PRECEDING) {
         navLinks.insertBefore(tab, other);
         startX = e.clientX;
-        origLeft = tab.getBoundingClientRect().left;
         tabs = Array.from(navLinks.querySelectorAll('.tab'));
       }
     });
   });
 
-  function release(e) {
+  function release() {
     if (dragTab !== tab) return;
     tab.releasePointerCapture(pointerId);
     tab.classList.remove('dragging');
