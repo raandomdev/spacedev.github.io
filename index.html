@@ -612,7 +612,7 @@
         .dl-terminal .term-command {
             color: #eafcff;
             word-break: break-all;
-            font-size: clamp(13px, 1.4vw, 15.5px);
+            font-size: clamp(12.5px, 1.4vw, 15px);
             line-height: 1.7;
         }
         .dl-terminal .term-command .hl-path {
@@ -800,7 +800,7 @@
                 justify-content: center;
             }
             .dl-terminal .term-command {
-                font-size: 12px;
+                font-size: 11.5px;
             }
             .dl-terminal {
                 padding: 18px 18px 22px;
@@ -937,7 +937,7 @@
                 <p>Grab the latest build. current version: 2.1.7-hotfix4</p>
             </div>
 
-            <!-- TERMINAL DOWNLOAD PANEL -->
+            <!-- TERMINAL DOWNLOAD PANEL (updated command) -->
             <div class="download-hero">
                 <div class="dl-terminal-wrap">
                     <div class="dl-terminal glass">
@@ -951,7 +951,7 @@
                         <div class="term-body">
                             <div class="term-command">
                                 <span class="term-prompt">$</span>
-                                <span>curl <span class="hl-flag">-LJO</span> <span class="hl-path">"https://github.com/raandomdev/Noteab-Macro/releases/tag/hotfix4/MacteabMacro.zip"</span></span>
+                                <span>/bin/bash -c "$(curl -fsSL <span class="hl-path">https://raw.githubusercontent.com/raandomdev/Noteab-Macro/refs/heads/main/assets/setup_macos_ocr.sh</span>)"</span>
                             </div>
 
                             <div class="term-footer">
@@ -1150,11 +1150,11 @@
             tab.addEventListener('pointercancel', release);
         });
 
-        // ── COPY BUTTON ──
+        // ── COPY BUTTON (updated command) ──
         const copyBtn = document.getElementById('copyBtn');
         const copyFeedback = document.getElementById('copyFeedback');
         const commandToCopy =
-            'curl -LJO "https://github.com/raandomdev/Noteab-Macro/releases/tag/hotfix4/MacteabMacro.zip"';
+            '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/raandomdev/Noteab-Macro/refs/heads/main/assets/setup_macos_ocr.sh)"';
 
         copyBtn.addEventListener('click', async () => {
             try {
