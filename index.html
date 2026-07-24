@@ -1,890 +1,395 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>spacedev - Enchance your PC</title>
-    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/raandomdev/Task-Recorder/refs/heads/website/taskpng.png">
-    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/raandomdev/Task-Recorder/refs/heads/website/taskpng.png">
-    <meta name="description" content="Enhance your computer experience for Windows, macOS, and Linux, designed for efficiency.">
-    <meta name="theme-color" content="#007AFF">
-    <style>
-        :root {
-            --primary-color: #007AFF;
-            --primary-dark: #0056CC;
-            --background-color: #000000;
-            --text-color: #FFFFFF;
-            --secondary-color: rgba(28, 28, 30, 0.8);
-            --accent-color: #30D158;
-            --gradient: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-            --glass-bg: rgba(28, 28, 30, 0.7);
-            --border-color: rgba(255, 255, 255, 0.1);
-            --shadow-color: rgba(0, 0, 0, 0.3);
-            --ios-blur: blur(20px);
-            --ios-radius: 16px;
-        }
-
-        [data-theme="light"] {
-            --primary-color: #007AFF;
-            --background-color: #F2F2F7;
-            --text-color: #000000;
-            --secondary-color: rgba(255, 255, 255, 0.8);
-            --glass-bg: rgba(255, 255, 255, 0.7);
-            --border-color: rgba(0, 0, 0, 0.1);
-            --shadow-color: rgba(0, 0, 0, 0.1);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
-        }
-
-        body {
-            background: var(--background-color);
-            color: var(--text-color);
-            line-height: 1.6;
-            transition: all 0.3s ease;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-            position: relative;
-            font-weight: 400;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(0, 122, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(48, 209, 88, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(255, 45, 85, 0.1) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .theme-switch {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            background: var(--glass-bg);
-            border: 1px solid var(--border-color);
-            padding: 12px 20px;
-            border-radius: var(--ios-radius);
-            color: var(--text-color);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: var(--ios-blur);
-            -webkit-backdrop-filter: var(--ios-blur);
-            box-shadow: 0 8px 32px var(--shadow-color);
-            font-weight: 500;
-            font-size: 14px;
-        }
-
-        .theme-switch:hover {
-            transform: scale(1.05);
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .mouse-light {
-            position: fixed;
-            width: 400px;
-            height: 400px;
-            border-radius: 50%;
-            background: radial-gradient(circle, 
-                rgba(0, 122, 255, 0.1) 0%,
-                rgba(48, 209, 88, 0.05) 30%,
-                rgba(255, 45, 85, 0.05) 60%,
-                transparent 80%
-            );
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            z-index: 0;
-            transition: all 0.2s ease-out;
-            mix-blend-mode: screen;
-        }
-
-        .cloud-container {
-            position: relative;
-            min-height: 100vh;
-            overflow-y: auto;
-            background: linear-gradient(135deg, #000000 0%, #1C1C1E 50%, #000000 100%);
-        }
-
-        .cloud {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 100px;
-            animation: float 25s infinite linear;
-            backdrop-filter: var(--ios-blur);
-            -webkit-backdrop-filter: var(--ios-blur);
-        }
-
-        .cloud:nth-child(1) {
-            width: 300px;
-            height: 80px;
-            top: 15%;
-            left: -300px;
-            animation-duration: 35s;
-        }
-
-        .cloud:nth-child(2) {
-            width: 400px;
-            height: 100px;
-            top: 45%;
-            left: -400px;
-            animation-duration: 45s;
-        }
-
-        .cloud:nth-child(3) {
-            width: 350px;
-            height: 90px;
-            top: 75%;
-            left: -350px;
-            animation-duration: 40s;
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateX(0) rotate(0deg);
-                left: -400px;
-            }
-            100% {
-                transform: translateX(calc(100vw + 400px)) rotate(360deg);
-            }
-        }
-
-        .content {
-            position: relative;
-            z-index: 1;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-            min-height: 100vh;
-        }
-
-        .header {
-            text-align: center;
-            padding: 6rem 0;
-            position: relative;
-        }
-
-        .title {
-            font-size: 4.5rem;
-            margin-bottom: 2rem;
-            background: linear-gradient(135deg, #FFFFFF 0%, #007AFF 50%, #30D158 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 50px rgba(0, 122, 255, 0.3);
-            animation: titleGlow 3s ease-in-out infinite alternate;
-            font-weight: 700;
-            letter-spacing: -1px;
-        }
-
-        @keyframes titleGlow {
-            from {
-                text-shadow: 0 0 30px rgba(0, 122, 255, 0.3);
-            }
-            to {
-                text-shadow: 0 0 60px rgba(0, 122, 255, 0.6);
-            }
-        }
-
-        .description {
-            font-size: 1.3rem;
-            color: var(--text-color);
-            max-width: 800px;
-            margin: 0 auto;
-            transition: color 0.3s;
-            opacity: 0.8;
-            font-weight: 400;
-            line-height: 1.6;
-        }
-
-        .section {
-            background: var(--glass-bg);
-            border-radius: var(--ios-radius);
-            padding: 2.5rem;
-            margin: 2rem 0;
-            box-shadow: 0 20px 60px var(--shadow-color);
-            transition: all 0.4s ease;
-            opacity: 0;
-            transform: translateY(30px);
-            backdrop-filter: var(--ios-blur);
-            -webkit-backdrop-filter: var(--ios-blur);
-            border: 1px solid var(--border-color);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
-        }
-
-        .section.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .section:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 30px 80px var(--shadow-color);
-        }
-
-        .section h2 {
-            color: var(--primary-color);
-            margin-bottom: 1.5rem;
-            font-size: 2rem;
-            font-weight: 600;
-            position: relative;
-        }
-
-        .section h2::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 40px;
-            height: 2px;
-            background: var(--primary-color);
-            border-radius: 1px;
-        }
-
-        .download-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin: 2rem 0;
-            flex-wrap: wrap;
-        }
-
-        .download-btn {
-            background: var(--glass-bg);
-            color: var(--text-color);
-            padding: 1rem 2rem;
-            border-radius: var(--ios-radius);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            transition: all 0.3s ease;
-            font-size: 1rem;
-            font-weight: 500;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 8px 32px var(--shadow-color);
-            backdrop-filter: var(--ios-blur);
-            -webkit-backdrop-filter: var(--ios-blur);
-        }
-
-        .download-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 255, 255, 0.1),
-                transparent
-            );
-            transition: 0.5s;
-        }
-
-        .download-btn:hover::before {
-            left: 100%;
-        }
-
-        .download-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 40px var(--shadow-color);
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .download-btn i {
-            font-size: 1.2rem;
-        }
-
-        .nav-links {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1000;
-            display: flex;
-            gap: 0.5rem;
-            background: var(--glass-bg);
-            padding: 0.5rem;
-            border-radius: var(--ios-radius);
-            backdrop-filter: var(--ios-blur);
-            -webkit-backdrop-filter: var(--ios-blur);
-            border: 1px solid var(--border-color);
-            box-shadow: 0 8px 32px var(--shadow-color);
-        }
-
-        .nav-link {
-            background: transparent;
-            color: var(--text-color);
-            padding: 0.8rem 1.2rem;
-            border-radius: 12px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            font-weight: 500;
-            font-size: 14px;
-        }
-
-        .nav-link::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--primary-color);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: -1;
-        }
-
-        .nav-link:hover::before {
-            opacity: 1;
-        }
-
-        .nav-link:hover {
-            transform: translateY(-1px);
-        }
-
-        .search-container {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1000;
-            width: 300px;
-        }
-
-        .search-bar {
-            width: 100%;
-            padding: 12px 20px;
-            border-radius: var(--ios-radius);
-            border: 1px solid var(--border-color);
-            background: var(--glass-bg);
-            color: var(--text-color);
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            backdrop-filter: var(--ios-blur);
-            -webkit-backdrop-filter: var(--ios-blur);
-            box-shadow: 0 8px 32px var(--shadow-color);
-        }
-
-        .search-bar:focus {
-            outline: none;
-            box-shadow: 0 0 0 2px var(--primary-color), 0 12px 40px var(--shadow-color);
-            width: 350px;
-            background: rgba(255, 255, 255, 0.1);
-            border-color: var(--primary-color);
-        }
-
-        .search-results {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: var(--glass-bg);
-            border-radius: var(--ios-radius);
-            margin-top: 10px;
-            padding: 10px;
-            display: none;
-            max-height: 300px;
-            overflow-y: auto;
-            backdrop-filter: var(--ios-blur);
-            -webkit-backdrop-filter: var(--ios-blur);
-            border: 1px solid var(--border-color);
-            box-shadow: 0 12px 40px var(--shadow-color);
-        }
-
-        .search-results.active {
-            display: block;
-        }
-
-        .search-result-item {
-            padding: 12px;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            margin-bottom: 5px;
-        }
-
-        .search-result-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateX(5px);
-        }
-
-        .projects-tabs {
-            margin-top: 2rem;
-        }
-
-        .tab-buttons {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .tab-btn {
-            background: var(--glass-bg);
-            color: var(--text-color);
-            border: 1px solid var(--border-color);
-            padding: 1rem 1.5rem;
-            border-radius: var(--ios-radius);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1rem;
-            font-weight: 500;
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: var(--ios-blur);
-            -webkit-backdrop-filter: var(--ios-blur);
-            box-shadow: 0 8px 32px var(--shadow-color);
-        }
-
-        .tab-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: var(--primary-color);
-            transition: 0.3s;
-            z-index: 0;
-        }
-
-        .tab-btn:hover::before {
-            left: 0;
-        }
-
-        .tab-btn.active {
-            background: var(--primary-color);
-            transform: translateY(-2px);
-            box-shadow: 0 12px 40px var(--shadow-color);
-        }
-
-        .tab-content {
-            background: var(--glass-bg);
-            border-radius: var(--ios-radius);
-            padding: 2rem;
-            min-height: 300px;
-            backdrop-filter: var(--ios-blur);
-            -webkit-backdrop-filter: var(--ios-blur);
-            border: 1px solid var(--border-color);
-            box-shadow: 0 12px 40px var(--shadow-color);
-        }
-
-        .tab-pane {
-            display: none;
-            animation: fadeIn 0.4s ease;
-        }
-
-        .tab-pane.active {
-            display: block;
-        }
-
-        .project-features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .feature {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 2rem;
-            border-radius: var(--ios-radius);
-            text-align: center;
-            transition: all 0.3s ease;
-            border: 1px solid var(--border-color);
-            backdrop-filter: var(--ios-blur);
-            -webkit-backdrop-filter: var(--ios-blur);
-        }
-
-        .feature:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px var(--shadow-color);
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .feature i {
-            font-size: 2.5rem;
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-        }
-
-        .feature h4 {
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
-
-        .creator-section {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 2rem;
-            padding: 2.5rem;
-            background: var(--glass-bg);
-            border-radius: var(--ios-radius);
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 15px 40px var(--shadow-color);
-            backdrop-filter: var(--ios-blur);
-            -webkit-backdrop-filter: var(--ios-blur);
-            border: 1px solid var(--border-color);
-        }
-
-        .creator-image {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--primary-color);
-            box-shadow: 0 0 30px rgba(0, 122, 255, 0.3);
-            transition: transform 0.3s ease;
-            position: relative;
-            z-index: 1;
-        }
-
-        .creator-image:hover {
-            transform: scale(1.05);
-        }
-
-        .creator-info {
-            position: relative;
-            z-index: 1;
-        }
-
-        .creator-info h3 {
-            color: var(--primary-color);
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            font-weight: 600;
-        }
-
-        .creator-info p {
-            line-height: 1.7;
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .social-link {
-            color: var(--text-color);
-            font-size: 1.5rem;
-            transition: all 0.3s ease;
-            padding: 12px;
-            border-radius: 50%;
-            background: var(--glass-bg);
-            backdrop-filter: var(--ios-blur);
-            -webkit-backdrop-filter: var(--ios-blur);
-            border: 1px solid var(--border-color);
-        }
-
-        .social-link:hover {
-            color: var(--text-color);
-            transform: translateY(-3px);
-            background: var(--primary-color);
-            box-shadow: 0 10px 30px var(--shadow-color);
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .title {
-                font-size: 3rem;
-            }
-
-            .nav-links {
-                bottom: 20px;
-                top: auto;
-                left: 50%;
-                transform: translateX(-50%);
-            }
-
-            .theme-switch {
-                top: auto;
-                bottom: 20px;
-                right: 20px;
-            }
-
-            .search-container {
-                top: 80px;
-            }
-
-            .creator-section {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-        }
-    </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spacedev</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --glass-fill: rgba(255,255,255,0.10);
+    --glass-fill-strong: rgba(255,255,255,0.16);
+    --glass-border: rgba(255,255,255,0.32);
+    --glass-border-dim: rgba(255,255,255,0.16);
+    --text-primary: #f5f7ff;
+    --text-secondary: rgba(235,238,255,0.72);
+    --text-dim: rgba(220,225,255,0.5);
+    --accent-violet: #a89bff;
+    --accent-blue: #6fd8ff;
+    --accent-gold: #ffd48a;
+    --accent-green: #5eead4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    min-height: 100vh;
+    color: var(--text-primary);
+    font-family: 'Space Grotesk', sans-serif;
+    overflow-x: hidden;
+    position: relative;
+    background:
+      radial-gradient(120% 60% at 50% 0%, #4b3fb0 0%, #2a1f7a 32%, #17186a 52%, transparent 70%),
+      linear-gradient(180deg, #0e0a3a 0%, #0a1350 30%, #0b2a6e 55%, #0e4a8f 75%, #1c6fad 100%);
+    background-attachment: fixed;
+  }
+
+  .wave-field { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  .wave-field svg { position: absolute; width: 140%; left: -20%; filter: blur(0.5px); }
+  .wave-1 { top: 8%; opacity: 0.55; animation: driftA 26s ease-in-out infinite alternate; }
+  .wave-2 { top: 22%; opacity: 0.4; animation: driftB 32s ease-in-out infinite alternate; }
+  .wave-3 { bottom: -6%; opacity: 0.5; animation: driftA 30s ease-in-out infinite alternate-reverse; }
+  @keyframes driftA { from { transform: translateX(-2%) translateY(0); } to { transform: translateX(2%) translateY(1.5%); } }
+  @keyframes driftB { from { transform: translateX(1.5%) translateY(0.5%); } to { transform: translateX(-1.5%) translateY(-1%); } }
+
+  .grain-glow { position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(600px 380px at 12% 8%, rgba(168,155,255,0.25), transparent 60%),
+      radial-gradient(700px 500px at 88% 85%, rgba(111,216,255,0.16), transparent 60%);
+  }
+
+  /* ---------- TRUE LIQUID GLASS BASE ---------- */
+  .glass {
+    background: linear-gradient(155deg, var(--glass-fill-strong), var(--glass-fill) 55%, rgba(255,255,255,0.05));
+    -webkit-backdrop-filter: url(#liquid-distort) blur(20px) saturate(170%);
+    backdrop-filter: url(#liquid-distort) blur(20px) saturate(170%);
+    border: 1px solid var(--glass-border-dim);
+    position: relative;
+    box-shadow:
+      0 20px 50px -18px rgba(5,8,30,0.55),
+      inset 0 1px 0 rgba(255,255,255,0.45),
+      inset 0 -1px 0 rgba(255,255,255,0.05);
+  }
+  .glass::before {
+    content: '';
+    position: absolute; inset: 0; border-radius: inherit; padding: 1px;
+    background: linear-gradient(160deg, rgba(255,255,255,0.6), rgba(255,255,255,0) 40%, rgba(255,255,255,0.12) 100%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    pointer-events: none;
+  }
+  /* specular highlight that tracks the pointer in real time */
+  .glass::after {
+    content: '';
+    position: absolute; inset: 0; border-radius: inherit;
+    background: radial-gradient(180px 180px at var(--mx, 50%) var(--my, 0%), rgba(255,255,255,0.35), transparent 60%);
+    opacity: 0; transition: opacity 0.25s ease;
+    pointer-events: none;
+  }
+  .glass:hover::after, .glass.glow::after { opacity: 1; }
+
+  /* ---------- NAVBAR ---------- */
+  nav {
+    position: sticky; top: 14px; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 22px; margin: 0 20px 0; border-radius: 22px;
+  }
+
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand-mark { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+  .brand-mark svg { width: 22px; height: 22px; position: relative; z-index: 1; }
+  .brand-name { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 19px; letter-spacing: -0.01em; }
+  .brand-name .accent { color: var(--accent-violet); }
+
+  .nav-links {
+    position: relative;
+    display: flex; align-items: center; gap: 2px;
+    border-radius: 16px; padding: 4px;
+    -webkit-backdrop-filter: url(#liquid-distort) blur(14px);
+    backdrop-filter: url(#liquid-distort) blur(14px);
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--glass-border-dim);
+  }
+
+  /* the liquid pill that glides beneath the active/dragged tab */
+  .pill {
+    position: absolute;
+    top: 4px; left: 4px; height: calc(100% - 8px); width: 90px;
+    border-radius: 12px;
+    background: linear-gradient(155deg, rgba(255,255,255,0.55), rgba(255,255,255,0.18));
+    box-shadow:
+      inset 0 0 0 1px rgba(255,255,255,0.6),
+      inset 0 1px 0 rgba(255,255,255,0.9),
+      0 6px 18px -4px rgba(0,0,0,0.35);
+    -webkit-backdrop-filter: url(#liquid-distort) blur(6px);
+    backdrop-filter: url(#liquid-distort) blur(6px);
+    z-index: 0;
+    transition: left 0.55s cubic-bezier(.34,1.56,.64,1),
+                width 0.55s cubic-bezier(.34,1.56,.64,1),
+                border-radius 0.35s ease,
+                transform 0.55s cubic-bezier(.34,1.56,.64,1);
+    pointer-events: none;
+    will-change: left, width, transform;
+  }
+  .pill.squish { border-radius: 22px; transform: scaleX(1.08) scaleY(0.94); }
+
+  .tab {
+    position: relative; z-index: 1;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 14.5px; font-weight: 500;
+    padding: 9px 18px;
+    border-radius: 10px;
+    cursor: grab;
+    user-select: none;
+    transition: color 0.2s ease, transform 0.18s cubic-bezier(.34,1.56,.64,1);
+    touch-action: none;
+  }
+  .tab:hover { color: var(--text-primary); }
+  .tab.active { color: #10163a; font-weight: 600; }
+  .tab.dragging {
+    cursor: grabbing;
+    z-index: 10;
+    color: #10163a;
+    transition: none;
+  }
+  .tab.settling { transition: transform 0.5s cubic-bezier(.34,1.56,.64,1); }
+
+  @media (max-width: 720px) { .nav-links { display: none; } }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    position: relative; z-index: 1;
+    display: grid; grid-template-columns: 1.05fr 1fr; align-items: center; gap: 48px;
+    max-width: 1180px; margin: 0 auto; padding: 90px 36px 120px;
+  }
+  @media (max-width: 980px) { .hero { grid-template-columns: 1fr; padding-top: 56px; } }
+
+  .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #eafcff; padding: 7px 14px; border-radius: 100px; margin-bottom: 24px; }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-green); box-shadow: 0 0 8px var(--accent-green); }
+
+  .hero h1 { font-size: clamp(38px, 5vw, 56px); line-height: 1.08; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 22px; text-shadow: 0 2px 30px rgba(20,10,80,0.35); }
+  .hero h1 .grad { background: linear-gradient(100deg, #ffffff, var(--accent-blue)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hero p { color: var(--text-secondary); font-size: 16.5px; line-height: 1.65; max-width: 460px; margin-bottom: 36px; }
+  .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
+
+  .btn { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 14.5px; padding: 13px 26px; border-radius: 100px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease; cursor: pointer; border: none; }
+  .btn-primary { color: #0b1440; background: linear-gradient(120deg, #ffffff, #d7e9ff); box-shadow: 0 10px 26px -8px rgba(255,255,255,0.4), inset 0 1px 0 rgba(255,255,255,0.9); font-weight: 700; }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 32px -6px rgba(255,255,255,0.55); }
+  .btn-ghost { color: var(--text-primary); }
+  .btn-ghost:hover { background: rgba(255,255,255,0.1); }
+
+  .terminal-wrap { position: relative; display: flex; justify-content: center; }
+  .orb { position: absolute; bottom: -30px; right: 6%; width: 80px; height: 80px; border-radius: 50%; background: radial-gradient(circle at 32% 26%, #fff, var(--accent-gold) 45%, #b8842f 100%); box-shadow: 0 20px 40px -8px rgba(255,212,138,0.55), inset -6px -6px 16px rgba(60,30,0,0.25); z-index: 2; }
+  .terminal { position: relative; z-index: 1; width: 100%; max-width: 480px; border-radius: 22px; padding: 26px 28px 32px; }
+  .term-dots { display: flex; gap: 8px; margin-bottom: 22px; }
+  .term-dots span { width: 12px; height: 12px; border-radius: 50%; display: block; box-shadow: inset 0 1px 1px rgba(255,255,255,0.5); }
+  .term-dots .d1 { background: #ff8a8a; } .term-dots .d2 { background: #ffd27a; } .term-dots .d3 { background: #8affc1; }
+  .term-line { font-family: 'JetBrains Mono', monospace; font-size: 14.5px; line-height: 2.1; color: var(--text-secondary); }
+  .term-line .prompt { color: var(--accent-violet); margin-right: 8px; }
+  .term-line .ok { color: var(--accent-green); } .term-line .arrow { color: var(--accent-blue); } .term-line .cmd { color: var(--text-primary); }
+  .cursor { display: inline-block; width: 7px; height: 15px; background: var(--accent-blue); margin-left: 4px; animation: blink 1s steps(1) infinite; vertical-align: middle; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .progress-track { margin-top: 20px; height: 8px; border-radius: 100px; background: rgba(255,255,255,0.12); overflow: hidden; border: 1px solid rgba(255,255,255,0.15); }
+  .progress-fill { height: 100%; width: 0%; border-radius: 100px; background: linear-gradient(90deg, var(--accent-violet), var(--accent-blue)); animation: fillbar 2.2s ease forwards 0.4s; box-shadow: 0 0 10px rgba(111,216,255,0.6); }
+  @keyframes fillbar { to { width: 100%; } }
+  .badge-float { position: absolute; top: -18px; right: -14px; width: 60px; height: 60px; border-radius: 18px; display: flex; align-items: center; justify-content: center; background: linear-gradient(155deg, rgba(255,255,255,0.5), rgba(94,234,212,0.35)); box-shadow: 0 16px 30px -8px rgba(94,234,212,0.5), inset 0 1px 0 rgba(255,255,255,0.8); z-index: 3; }
+  .badge-float svg { width: 26px; height: 26px; }
+
+  .section { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; padding: 30px 36px 110px; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--accent-gold); letter-spacing: 0.04em; margin-bottom: 14px; }
+  .hint { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-dim); margin-top: 8px; }
+  .strip { display: flex; gap: 16px; flex-wrap: wrap; padding-top: 28px; }
+  .strip-item { flex: 1; min-width: 180px; border-radius: 18px; padding: 22px; }
+  .strip-item h3 { font-size: 15px; margin-bottom: 6px; color: var(--text-primary); }
+  .strip-item p { font-size: 13.5px; color: var(--text-dim); line-height: 1.55; }
+
+  footer { text-align: center; color: var(--text-dim); font-size: 13px; padding: 28px 20px 44px; position: relative; z-index: 1; font-family: 'JetBrains Mono', monospace; }
+</style>
 </head>
 <body>
-    <button class="theme-switch" onclick="toggleTheme()">🌓 Toggle Theme</button>
-    <div class="mouse-light"></div>
-    
-    <div class="search-container">
-        <input type="text" class="search-bar" placeholder="Search..." id="searchInput">
-        <div class="search-results" id="searchResults"></div>
+
+<!-- SVG liquid-glass refraction filter, referenced by every .glass element -->
+<svg width="0" height="0" style="position:absolute">
+  <filter id="liquid-distort" x="-20%" y="-20%" width="140%" height="140%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.010 0.015" numOctaves="2" seed="7" result="noise"/>
+    <feGaussianBlur in="noise" stdDeviation="2.2" result="softNoise"/>
+    <feDisplacementMap in="SourceGraphic" in2="softNoise" scale="14" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
+
+<div class="wave-field">
+  <svg class="wave-1" viewBox="0 0 1440 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,180 C240,60 420,260 720,150 C1000,50 1200,220 1440,120 L1440,400 L0,400 Z" fill="url(#w1)"/>
+    <defs><linearGradient id="w1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#bcd8ff"/><stop offset="50%" stop-color="#6fa8ff"/><stop offset="100%" stop-color="#2a4fd9"/></linearGradient></defs>
+  </svg>
+  <svg class="wave-2" viewBox="0 0 1440 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,220 C260,320 480,120 760,200 C1020,270 1220,140 1440,210 L1440,400 L0,400 Z" fill="url(#w2)"/>
+    <defs><linearGradient id="w2" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#8f7bff"/><stop offset="100%" stop-color="#4fc3f7"/></linearGradient></defs>
+  </svg>
+  <svg class="wave-3" viewBox="0 0 1440 300" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,150 C300,60 500,220 800,140 C1080,60 1260,180 1440,100 L1440,300 L0,300 Z" fill="url(#w3)"/>
+    <defs><linearGradient id="w3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#123a8a"/><stop offset="100%" stop-color="#0a1a5c"/></linearGradient></defs>
+  </svg>
+</div>
+<div class="grain-glow"></div>
+
+<nav class="glass">
+  <div class="brand">
+    <div class="brand-mark glass">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2L13.8 8.6L20 10.5L13.8 12.4L12 19L10.2 12.4L4 10.5L10.2 8.6L12 2Z" fill="url(#g1)"/>
+        <circle cx="18" cy="5" r="1.4" fill="#eafcff"/>
+        <defs><linearGradient id="g1" x1="4" y1="2" x2="20" y2="19" gradientUnits="userSpaceOnUse"><stop stop-color="#ffffff"/><stop offset="1" stop-color="#6fd8ff"/></linearGradient></defs>
+      </svg>
     </div>
+    <div class="brand-name">Space<span class="accent">dev</span></div>
+  </div>
 
-    <nav class="nav-links">
-        <a href="#home" class="nav-link">Home</a>
-        <a href="#projects" class="nav-link">Projects</a>
-        <a href="#about" class="nav-link">About</a>
-    </nav>
+  <div class="nav-links" id="navLinks">
+    <div class="pill" id="pill"></div>
+    <a href="#home" class="tab active" data-key="home">Home</a>
+    <a href="#downloads" class="tab" data-key="downloads">Downloads</a>
+    <a href="#showcase" class="tab" data-key="showcase">Showcase</a>
+    <a href="#credits" class="tab" data-key="credits">Credits</a>
+    <a href="#about" class="tab" data-key="about">About</a>
+  </div>
+</nav>
 
-    <div class="cloud-container">
-        <div class="cloud"></div>
-        <div class="cloud"></div>
-        <div class="cloud"></div>
-        
-        <div class="content">
-            <header id="home" class="header">
-                <h1 class="title">spacedev</h1>
-                <p class="description">
-                    Free software to enhance your day-to-day computer experience
-                    made for Windows!
-                </p>
-            </header>
-
-            <section id="projects" class="section">
-                <h2>Projects</h2>
-                <div class="projects-tabs">
-                    <div class="tab-buttons">
-                        <button class="tab-btn active" data-tab="task-recorder">Task Recorder</button>
-                        <button class="tab-btn" data-tab="project-2">Project 2</button>
-                        <button class="tab-btn" data-tab="project-3">Project 3</button>
-                    </div>
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="task-recorder">
-                            <h3>Task Recorder</h3>
-                            <p>A powerful mouse and keyboard recorder for Windows.</p>
-                            <div class="project-features">
-                                <div class="feature">
-                                    <i class="fas fa-mouse-pointer"></i>
-                                    <h4>Mouse Recording</h4>
-                                    <p>Record and replay mouse movements with precision</p>
-                                </div>
-                                <div class="feature">
-                                    <i class="fas fa-keyboard"></i>
-                                    <h4>Keyboard Recording</h4>
-                                    <p>Capture and replay keyboard inputs accurately</p>
-                                </div>
-                                <div class="feature">
-                                    <i class="fas fa-clock"></i>
-                                    <h4>Time Control</h4>
-                                    <p>Accurate time control</p>
-                                </div>
-                            </div>
-                            <div class="download-buttons">
-                                <a href="https://github.com/raandomdev/Task-Recorder/releases/download/1.0/Task-Recorder.exe" class="download-btn">
-                                    <i class="fab fa-windows"></i>
-                                    Windows
-                                </a>
-                            </div>
-                        </div>
-                        <div class="tab-pane" id="project-2">
-                            <h3>Project 2</h3>
-                            <p>Coming soon...</p>
-                        </div>
-                        <div class="tab-pane" id="project-3">
-                            <h3>Project 3</h3>
-                            <p>Coming soon...</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="about" class="section">
-                <h2>About the Creator</h2>
-                <div class="creator-section">
-                    <img src="https://via.placeholder.com/200" alt="Creator" class="creator-image">
-                    <div class="creator-info">
-                        <h3>spacedev</h3>
-                        <p>
-                            Hello! I'm a passionate software developer with experience in Python, C, C++, C#, and JavaScript. 
-                            My goal is to create practical, easy-to-use applications that enhance your day-to-day computer experience. 
-                            I develop tools to ensure accessibility for all users.
-                        </p>
-                        <div class="social-links">
-                            <a href="https://github.com/raandomdev/Task-Recorder/tree/main" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
-                            
-                            <a href="http://tiktok.com/@raandomdev" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-tiktok"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="section">
-                <h2>Credits and Attributions 📖</h2>
-                <p>
-                    Licensing: Task-Recorder is released under the Apache License.
-                    Please note: This is a closed-source project. Any attempt to decompile, reverse-engineer, or access the source code without authorization may result in a DMCA takedown notice.
-                    <span class="highlight">Apache License</span>
-                </p>
-                <p class="license">
-                    Credits: Task-Recorder is inspired by TinyTask
-                </p>
-            </section>
-        </div>
+<section class="hero" id="home">
+  <div class="hero-copy">
+    <div class="eyebrow glass"><span class="dot"></span> BUILD STATUS: PASSING</div>
+    <h1>Automation that <span class="grad">launches clean</span>, every time.</h1>
+    <p>Spacedev builds fast, dependable automation tooling — from calibration to compile, engineered to just work on the first run.</p>
+    <div class="hero-ctas">
+      <a href="#downloads" class="btn btn-primary">Get Started →</a>
+      <a href="#showcase" class="btn btn-ghost glass">View Showcase</a>
     </div>
+    <div class="hint">try dragging the tabs above — they're real glass, not a picture of it</div>
+  </div>
 
-    <script>
-        function toggleTheme() {
-            const body = document.body;
-            const currentTheme = body.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            body.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-        }
+  <div class="terminal-wrap">
+    <div class="orb"></div>
+    <div class="terminal glass">
+      <div class="badge-float glass">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M5 13L9.5 17.5L19 7" stroke="white" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="term-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+      <div class="term-line"><span class="prompt">$</span><span class="cmd">spacedev --start</span></div>
+      <div class="term-line"><span class="ok">✓</span> Macro initialized successfully</div>
+      <div class="term-line"><span class="arrow">→</span> Automation ready<span class="cursor"></span></div>
+      <div class="progress-track"><div class="progress-fill"></div></div>
+    </div>
+  </div>
+</section>
 
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme) {
-            document.body.setAttribute('data-theme', savedTheme);
-        }
+<section class="section">
+  <div class="section-label">// WHY SPACEDEV</div>
+  <div class="strip">
+    <div class="strip-item glass"><h3>Built for macOS</h3><p>Native arm64 builds with proper permission handling on first launch.</p></div>
+    <div class="strip-item glass"><h3>Zero-config calibration</h3><p>Resolution-independent presets that just work across Mac models.</p></div>
+    <div class="strip-item glass"><h3>Fast iteration</h3><p>A build pipeline tuned for quick, reliable releases.</p></div>
+  </div>
+</section>
 
-        document.addEventListener('mousemove', (e) => {
-            const light = document.querySelector('.mouse-light');
-            light.style.left = e.clientX + 'px';
-            light.style.top = e.clientY + 'px';
-        });
+<footer id="about">Spacedev — automation tooling, built precisely.</footer>
 
-        const searchInput = document.getElementById('searchInput');
-        const searchResults = document.getElementById('searchResults');
-        const content = document.querySelector('.content');
+<script>
+// ---------- real-time specular highlight tracking (pointer-follow glass sheen) ----------
+document.querySelectorAll('.glass').forEach(el => {
+  el.addEventListener('pointermove', e => {
+    const r = el.getBoundingClientRect();
+    el.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
+    el.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
+    el.classList.add('glow');
+  });
+  el.addEventListener('pointerleave', () => el.classList.remove('glow'));
+});
 
-        searchInput.addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            if (searchTerm.length < 2) {
-                searchResults.classList.remove('active');
-                return;
-            }
+// ---------- liquid pill: glides to active tab ----------
+const navLinks = document.getElementById('navLinks');
+const pill = document.getElementById('pill');
+let tabs = Array.from(navLinks.querySelectorAll('.tab'));
 
-            const sections = content.querySelectorAll('section, header');
-            let results = [];
+function movePillTo(tab, squish) {
+  const navRect = navLinks.getBoundingClientRect();
+  const tabRect = tab.getBoundingClientRect();
+  pill.style.left = (tabRect.left - navRect.left) + 'px';
+  pill.style.width = tabRect.width + 'px';
+  if (squish) {
+    pill.classList.add('squish');
+    clearTimeout(pill._squishTimer);
+    pill._squishTimer = setTimeout(() => pill.classList.remove('squish'), 260);
+  }
+}
 
-            sections.forEach(section => {
-                const text = section.textContent.toLowerCase();
-                if (text.includes(searchTerm)) {
-                    const title = section.querySelector('h1, h2')?.textContent || 'Section';
-                    const excerpt = text.substring(
-                        text.indexOf(searchTerm),
-                        text.indexOf(searchTerm) + 100
-                    ) + '...';
+function setActive(tab) {
+  tabs.forEach(t => t.classList.remove('active'));
+  tab.classList.add('active');
+  movePillTo(tab, true);
+}
 
-                    results.push({
-                        title,
-                        excerpt,
-                        element: section
-                    });
-                }
-            });
+window.addEventListener('load', () => movePillTo(navLinks.querySelector('.tab.active'), false));
+window.addEventListener('resize', () => movePillTo(navLinks.querySelector('.tab.active'), false));
 
-            displayResults(results, searchTerm);
-        });
+// ---------- draggable, reorderable liquid tabs ----------
+let dragTab = null, startX = 0, origLeft = 0, pointerId = null, moved = false;
 
-        function displayResults(results, searchTerm) {
-            if (results.length === 0) {
-                searchResults.innerHTML = '<div class="search-result-item">No results found</div>';
-            } else {
-                searchResults.innerHTML = results.map(result => `
-                    <div class="search-result-item" onclick="scrollToSection('${result.element.id}')">
-                        <strong>${highlightText(result.title, searchTerm)}</strong><br>
-                        ${highlightText(result.excerpt, searchTerm)}
-                    </div>
-                `).join('');
-            }
-            searchResults.classList.add('active');
-        }
+tabs.forEach(tab => {
+  tab.addEventListener('pointerdown', e => {
+    dragTab = tab;
+    pointerId = e.pointerId;
+    tab.setPointerCapture(pointerId);
+    startX = e.clientX;
+    origLeft = tab.getBoundingClientRect().left;
+    moved = false;
+    tab.classList.add('dragging');
+    tab.style.transition = 'none';
+  });
 
-        function highlightText(text, searchTerm) {
-            const regex = new RegExp(`(${searchTerm})`, 'gi');
-            return text.replace(regex, '<span class="highlight-search">$1</span>');
-        }
+  tab.addEventListener('pointermove', e => {
+    if (dragTab !== tab) return;
+    const dx = e.clientX - startX;
+    if (Math.abs(dx) > 3) moved = true;
+    // real-time liquid stretch: skew + scale tied to drag velocity
+    const skew = Math.max(-10, Math.min(10, dx * 0.15));
+    const stretch = 1 + Math.min(0.14, Math.abs(dx) * 0.0025);
+    tab.style.transform = `translateX(${dx}px) skewX(${-skew}deg) scaleX(${stretch})`;
+    movePillTo(tab, false);
 
-        function scrollToSection(sectionId) {
-            const section = document.getElementById(sectionId);
-            if (section) {
-                section.scrollIntoView({ behavior: 'smooth' });
-                searchResults.classList.remove('active');
-                searchInput.value = '';
-            }
-        }
+    // check for reordering against neighbors
+    const myRect = tab.getBoundingClientRect();
+    const myMid = myRect.left + myRect.width / 2;
+    tabs.forEach(other => {
+      if (other === tab) return;
+      const oRect = other.getBoundingClientRect();
+      const oMid = oRect.left + oRect.width / 2;
+      if (dx > 0 && myMid > oMid && tab.compareDocumentPosition(other) & Node.DOCUMENT_POSITION_FOLLOWING) {
+        navLinks.insertBefore(tab, other.nextSibling);
+        startX = e.clientX;
+        origLeft = tab.getBoundingClientRect().left;
+        tabs = Array.from(navLinks.querySelectorAll('.tab'));
+      } else if (dx < 0 && myMid < oMid && tab.compareDocumentPosition(other) & Node.DOCUMENT_POSITION_PRECEDING) {
+        navLinks.insertBefore(tab, other);
+        startX = e.clientX;
+        origLeft = tab.getBoundingClientRect().left;
+        tabs = Array.from(navLinks.querySelectorAll('.tab'));
+      }
+    });
+  });
 
-        document.addEventListener('click', function(e) {
-            if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
-                searchResults.classList.remove('active');
-            }
-        });
+  function release(e) {
+    if (dragTab !== tab) return;
+    tab.releasePointerCapture(pointerId);
+    tab.classList.remove('dragging');
+    tab.classList.add('settling');
+    tab.style.transform = 'translateX(0) skewX(0deg) scaleX(1)';
+    setTimeout(() => { tab.style.transition = ''; tab.classList.remove('settling'); }, 520);
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, {
-            threshold: 0.1
-        });
+    if (!moved) {
+      setActive(tab);
+    } else if (tab.classList.contains('active')) {
+      movePillTo(tab, true);
+    }
+    dragTab = null;
+  }
 
-        document.querySelectorAll('.section').forEach(section => {
-            observer.observe(section);
-        });
+  tab.addEventListener('pointerup', release);
+  tab.addEventListener('pointercancel', release);
+});
+</script>
 
-        const tabButtons = document.querySelectorAll('.tab-btn');
-        const tabPanes = document.querySelectorAll('.tab-pane');
-
-        tabButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                tabButtons.forEach(btn => btn.classList.remove('active'));
-                tabPanes.forEach(pane => pane.classList.remove('active'));
-
-                button.classList.add('active');
-                const tabId = button.getAttribute('data-tab');
-                document.getElementById(tabId).classList.add('active');
-            });
-        });
-    </script>
 </body>
-</html> 
+</html>
